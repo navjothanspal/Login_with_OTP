@@ -15,6 +15,7 @@ class AuthViewModel extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
+
     final response = await sendOtpUseCase.execute(phoneNumber);
 
     message = response.message;
@@ -25,11 +26,11 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   // Verify OTP
-  Future<bool> verifyOtp(String phoneNumber, String otp) async {
+  Future<bool> verifyOtp(String phoneNumber, String otp ,token) async {
     isLoading = true;
     notifyListeners();
 
-    final response = await verifyOtpUseCase.execute(phoneNumber, otp);
+    final response = await verifyOtpUseCase.execute(phoneNumber, otp,token);
 
     message = response.message;
     isLoading = false;
