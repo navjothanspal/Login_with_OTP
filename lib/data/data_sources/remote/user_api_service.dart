@@ -86,14 +86,31 @@ class AuthRemoteDataSource {
     //   // Access nested data
     //   Data? data = apiResponse.data;
     //   if (apiResponse.data != null) {
-    //     await SharedPreferencesService().saveString("jwdToken", data!.jwtToken);
+    //     await SharedPreferencesService.saveString("jwtToken", data!.jwtToken);
     //     print(apiResponse.data!.jwtToken); // Use null-aware operator `!`
-    //   }
     //
+    //
+    //   }
     //   print("value in service cls $data");
     // }
 
     if (response.statusCode == 200) {
+
+      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+
+      // Map JSON to ApiResponseFromOtpVerify model
+      ApiResponseFromOtpVerify apiResponse =
+      ApiResponseFromOtpVerify.fromJson(jsonResponse);
+
+      // Access nested data
+      Data? data = apiResponse.data;
+      if (apiResponse.data != null) {
+        await SharedPreferencesService.saveString("jwtToken", data!.jwtToken);
+        print(apiResponse.data!.jwtToken); // Use null-aware operator `!`
+        
+      }
+      print("value in service cls $data");
+
       return ApiResponseFromOtpVerify (success: true, message: 'OTP verified successfully');
     } else {
       return ApiResponseFromOtpVerify (data: null,success: false, message: 'Failed to verify OTP');

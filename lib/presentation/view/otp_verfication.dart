@@ -28,6 +28,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   String? csrfToken;
   String? jwdToken; // Variable to store the CSRF token
 
+
+
+
   @override
   void initState() {
     super.initState();
@@ -80,19 +83,18 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       csrfToken!, // Pass the CSRF token here
     );
 
-    setState(() {
+    setState(() async {
       isLoading = false;
-      if (response.success ) {
+   if (response.success ) {
 
-         // jwdToken = SharedPreferencesService().getString("jwdToken");
-        //  print("check value  $jwdToken");
-
-
+      //   jwdToken = await SharedPreferencesService.getString("jwtToken");
+      //   print("check value  $jwdToken");
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => WelcomePage()),
               (route) => false,
         );
+
       } else {
         errorMessage = response.message;
       }
