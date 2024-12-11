@@ -4,7 +4,7 @@ import 'package:login_api_with_num/presentation/view/phone_number_verify.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({Key? key}) : super(key: key);
+  const WelcomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,7 @@ class WelcomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center, // Vertically center
           crossAxisAlignment: CrossAxisAlignment.center, // Horizontally center
           children: [
-
-            Text(
+            const Text(
               'Welcome!',
               style: TextStyle(fontSize: 24),
             ),
@@ -43,7 +42,7 @@ class WelcomePage extends StatelessWidget {
                  );
                }
               },
-                child: Text(
+                child: const Text(
                   'Logout',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 20 ,color: Colors.white),
@@ -51,8 +50,6 @@ class WelcomePage extends StatelessWidget {
             ),
           ],
         )
-
-
       ),
     );
   }

@@ -24,7 +24,6 @@ class AuthRemoteDataSource {
 
     final body1 = json.encode({'phone':phoneNumber});
 
-   // final body = json.encode({"phone":"7428873899"});
     final response = await client.post(url, headers: headers, body: body1);
 
     if (response.statusCode == 200) {
@@ -75,24 +74,7 @@ class AuthRemoteDataSource {
     final body = json.encode({'phone': phoneNumber, 'otp': otp});
 
     final response = await client.post(url, headers: headers, body: body);
-    // if (response.statusCode == 200) {
-    //   // Decode JSON
-    //   final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-    //
-    //   // Map JSON to ApiResponseFromOtpVerify model
-    //   ApiResponseFromOtpVerify apiResponse =
-    //   ApiResponseFromOtpVerify.fromJson(jsonResponse);
-    //
-    //   // Access nested data
-    //   Data? data = apiResponse.data;
-    //   if (apiResponse.data != null) {
-    //     await SharedPreferencesService.saveString("jwtToken", data!.jwtToken);
-    //     print(apiResponse.data!.jwtToken); // Use null-aware operator `!`
-    //
-    //
-    //   }
-    //   print("value in service cls $data");
-    // }
+
 
     if (response.statusCode == 200) {
 

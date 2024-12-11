@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:login_api_with_num/presentation/bloc/auth_bloc.dart';
 import 'package:login_api_with_num/presentation/view/home_page.dart';
 import 'package:login_api_with_num/presentation/view/phone_number_verify.dart';
-import 'package:provider/provider.dart';
-
 import '../../data/repo/user_repository_impl.dart';
 import '../../domain/usecase/get_users_usecase.dart';
 import '../../domain/usecase/share_preference.dart';
-import '../view_model/authentication_viewModel.dart';
-import 'otp_verfication.dart';
 
 
 Future<void> main() async {
    WidgetsFlutterBinding.ensureInitialized();
- // await SharedPreferencesService().init();
-  String? logInToken = await SharedPreferencesService.getString("jwtToken");
-   print("check value  $logInToken");
+   final sendOtpUseCase = SendOtpUseCase(AuthRepositoryImpl());
+   final verifyOtpUseCase = VerifyOtpUseCase(AuthRepositoryImpl());
+  final generateCsrfTokenUseCase= GenerateCsrfToken(AuthRepositoryImpl());
 
+  String? logInToken = await SharedPreferencesService.getString("jwtToken");
   runApp(
-    MultiProvider(
+    MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => AuthViewModel(), // Add your AuthViewModel provider
+        BlocProvider(
+          create: (context) => AuthBloc(
+            sendOtpUseCase: sendOtpUseCase,
+            verifyOtpUseCase:verifyOtpUseCase,
+           generateCsrfTokenUseCase: generateCsrfTokenUseCase
+          ),
         ),
         // Add other providers here
       ],
