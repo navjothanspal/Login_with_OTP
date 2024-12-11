@@ -4,6 +4,8 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_api_with_num/domain/usecase/share_preference.dart';
+import 'package:login_api_with_num/utils/dimenstion_file.dart';
+import 'package:login_api_with_num/utils/string_constant.dart';
 
 import '../../data/repo/user_repository_impl.dart';
 import '../../domain/usecase/get_users_usecase.dart';
@@ -37,22 +39,22 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Verify OTP')),
+      appBar: AppBar(title: Text(AppString.verifyOtp)),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(AppDimensions.padding_16),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthCsrfTokenFetched) {
               // Store the CSRF token when fetched
               setState(() {
                 csrfToken = state.csrfToken;
-                print( "data in the block $csrfToken");// Assign the CSRF token received
+                // Assign the CSRF token received
               });
             }
             if (state is AuthSuccess) {
               success = true;
-              print("auth sucesss");
-              if (state.message == 'OTP Verified Successfully') {
+
+              if (state.message == AppString.otpVerifiedSuccessfully) {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => WelcomePage()),
@@ -69,13 +71,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           builder: (context, state) {
             return Column(
               children: [
-                Text('Phone Number: ${widget.phoneNumber}'),
+                Text('${AppString.phoneNumber}: ${widget.phoneNumber}'),
                 TextField(
                   controller: otpController,
-                  decoration: InputDecoration(labelText: 'Enter OTP'),
+                  decoration: InputDecoration(labelText: AppString.enterOtp),
                   keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: AppDimensions.height_20),
                 ElevatedButton(
                   onPressed: state is AuthLoading
                       ? null
@@ -99,13 +101,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       }
                     } else {
                       setState(() {
-                        errorMessage = 'CSRF token is not available yet';
+                        errorMessage = AppString.errorForCsrfNotAvailable;
                       });
                     }
                   },
                   child: state is AuthLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('Verify OTP'),
+                      : const Text(AppString.verifyOtp),
                 ),
               ],
             );

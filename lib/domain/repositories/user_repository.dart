@@ -5,6 +5,6 @@ import '../entities/user_entity.dart';
 
 abstract class AuthRepository {
   Future<AuthResponse> sendOtp(String phoneNumber);
-  Future<ApiResponseFromOtpVerify > verifyOtp2(String phoneNumber, String otp, String token);
-  Future<CsrfTokenResponse> verifyOtp();
+  Future<ApiResponseFromOtpVerify > verifyOtp(String phoneNumber, String otp, String token);
+  Future<CsrfTokenResponse> getCsrfToken();
 }

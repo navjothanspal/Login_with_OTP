@@ -20,7 +20,7 @@ class GenerateCsrfToken {
   GenerateCsrfToken(this.repository);
 
   Future<CsrfTokenResponse> execute() {
-    return repository.verifyOtp();
+    return repository.getCsrfToken();
   }}
 
 class VerifyOtpUseCase{
@@ -29,7 +29,7 @@ class VerifyOtpUseCase{
   VerifyOtpUseCase(this.repository);
 
   Future<ApiResponseFromOtpVerify> execute(String phoneNumber, String otp, String token) {
-    return repository.verifyOtp2(phoneNumber, otp, token);
+    return repository.verifyOtp(phoneNumber, otp, token);
   }}
 
 

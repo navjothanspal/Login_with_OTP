@@ -6,6 +6,7 @@ import 'package:login_api_with_num/presentation/view/phone_number_verify.dart';
 import '../../data/repo/user_repository_impl.dart';
 import '../../domain/usecase/get_users_usecase.dart';
 import '../../domain/usecase/share_preference.dart';
+import '../../utils/string_constant.dart';
 
 
 Future<void> main() async {
@@ -14,7 +15,7 @@ Future<void> main() async {
    final verifyOtpUseCase = VerifyOtpUseCase(AuthRepositoryImpl());
   final generateCsrfTokenUseCase= GenerateCsrfToken(AuthRepositoryImpl());
 
-  String? logInToken = await SharedPreferencesService.getString("jwtToken");
+  String? logInToken = await SharedPreferencesService.getString(AppString.jwtToken);
   runApp(
     MultiBlocProvider(
       providers: [

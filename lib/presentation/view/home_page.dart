@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:login_api_with_num/domain/usecase/share_preference.dart';
 import 'package:login_api_with_num/presentation/view/phone_number_verify.dart';
+import 'package:login_api_with_num/utils/dimenstion_file.dart';
+import 'package:login_api_with_num/utils/string_constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -10,7 +12,7 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text(AppString.homepage),
       ),
       body:  Center(
         child:Column(
@@ -18,11 +20,11 @@ class WelcomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center, // Horizontally center
           children: [
             const Text(
-              'Welcome!',
-              style: TextStyle(fontSize: 24),
+              AppString.welcome,
+              style: TextStyle(fontSize: AppDimensions.fontSize_24),
             ),
 
-            SizedBox(height: 20),
+            SizedBox(height: AppDimensions.height_20),
 
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -30,8 +32,8 @@ class WelcomePage extends StatelessWidget {
                 foregroundColor: Colors.black, // foreground
               ),
               onPressed: () async {
-               await SharedPreferencesService.remove("jwtToken");
-               String? jwtToken = await SharedPreferencesService.getString("jwtToken");
+               await SharedPreferencesService.remove(AppString.jwtToken);
+               String? jwtToken = await SharedPreferencesService.getString(AppString.jwtToken);
                print("here the value of jwt  $jwtToken");
                if(jwtToken == null){
 
@@ -43,9 +45,9 @@ class WelcomePage extends StatelessWidget {
                }
               },
                 child: const Text(
-                  'Logout',
+                 AppString.logout,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20 ,color: Colors.white),
+                  style: TextStyle(fontSize: AppDimensions.fontSize_20 ,color: Colors.white),
                 ),
             ),
           ],

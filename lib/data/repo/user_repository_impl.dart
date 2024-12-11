@@ -13,11 +13,11 @@ class AuthRepositoryImpl implements AuthRepository {
     return remoteDataSource.sendOtp(phoneNumber);
   }
   @override
-  Future<ApiResponseFromOtpVerify> verifyOtp2(String phoneNumber, String otp ,String token) {
+  Future<ApiResponseFromOtpVerify> verifyOtp(String phoneNumber, String otp ,String token) {
     return remoteDataSource.verifyOtp(phoneNumber, otp,token);
   }
   @override
-  Future<CsrfTokenResponse>verifyOtp() {
+  Future<CsrfTokenResponse>getCsrfToken() {
     return remoteDataSource.generationCSRFfToken();
   }
 }

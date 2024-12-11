@@ -1,10 +1,12 @@
 import 'package:http/http.dart' as http;
 import 'package:login_api_with_num/domain/entities/response_csrf_token.dart';
+import 'package:login_api_with_num/utils/network_constant.dart';
 import 'dart:convert';
 
 import '../../../domain/entities/response_of_otp_verify.dart';
 import '../../../domain/entities/user_entity.dart';
 import '../../../domain/usecase/share_preference.dart';
+import '../../../utils/string_constant.dart';
 
 // request that send to client
 
@@ -15,33 +17,24 @@ class AuthRemoteDataSource {
 
   Future<AuthResponse> sendOtp(String phoneNumber) async {
 
-    final url = Uri.parse('https://staginguserapi.adda247.com/new-phone-verify?src=aweb');
-    final headers = {
-      'cp-origin': '11',
-      'x-auth-token': 'fpoa43edty5',
-      'Content-Type': 'application/json'
-    };
+    final url = Uri.parse('${BaseUrl.BaseUrlForUserLoginApi}${EndPoints.sendOtpEndPoint}');
+    final headers = Header.getHeaderToSendOtp;
 
-    final body1 = json.encode({'phone':phoneNumber});
+    final body1 = json.encode({JsonConstant.phone:phoneNumber});
 
     final response = await client.post(url, headers: headers, body: body1);
 
     if (response.statusCode == 200) {
-      return AuthResponse(success: true, message: 'OTP sent successfully');
+      return AuthResponse(success: true, message: AppString.otpVerifiedSuccessfully);
     } else {
-      return AuthResponse(success: false, message: 'Failed to send OTP');
+      return AuthResponse(success: false, message: AppString.otpVerificationFailed);
     }
   }
 
    // it returning the response api have csrf token
   Future<CsrfTokenResponse> generationCSRFfToken() async {
-    final url = Uri.parse('https://staginguserapi.adda247.com/csrf/token?src=and');
-    final headers = {
-      'cp-origin': '11',
-      'login_type':'1',
-      'x-auth-token': 'fpoa43edty5',
-
-    };
+    final url = Uri.parse('${BaseUrl.BaseUrlForUserLoginApi}${EndPoints.toGetCsrfToken}');
+    final headers = Header.getHeaderToGetCsrfToken;
 
     final response = await http.get(url, headers: headers);
 
@@ -52,7 +45,7 @@ class AuthRemoteDataSource {
     } else {
       return CsrfTokenResponse(
         success: false,
-        message: 'Failed to verify OTP',
+        message: AppString.otpVerificationFailed,
         status: null,
         data: null,
       );
@@ -60,18 +53,9 @@ class AuthRemoteDataSource {
   }
 
   Future<ApiResponseFromOtpVerify > verifyOtp(String phoneNumber, String otp ,String token) async {
-    final url = Uri.parse('https://staginguserapi.adda247.com/v3/new-otp-verify?src=and');
-    final headers = {
-      'cp-origin': '11',
-      'dname': 'Chrome on Mac Desktop',
-      'login_type':'2',
-      'x-auth-token': 'fpoa43edty5',
-      'x-csrf-token' : token,
-      'dID': '1e0def8712fc92f7',
-      'dName': 'google sdk_gphone64_x86_64',
-      'Content-Type': 'application/json',
-    };
-    final body = json.encode({'phone': phoneNumber, 'otp': otp});
+    final url = Uri.parse('${BaseUrl.BaseUrlForUserLoginApi}${EndPoints.verifyOtpEndPoint}');
+    final headers = Header.getHeadersForVerifyApi(token);
+    final body = json.encode({ JsonConstant.phone: phoneNumber, JsonConstant.otp: otp});
 
     final response = await client.post(url, headers: headers, body: body);
 
@@ -87,15 +71,15 @@ class AuthRemoteDataSource {
       // Access nested data
       Data? data = apiResponse.data;
       if (apiResponse.data != null) {
-        await SharedPreferencesService.saveString("jwtToken", data!.jwtToken);
+        await SharedPreferencesService.saveString(AppString.jwtToken, data!.jwtToken);
         print(apiResponse.data!.jwtToken); // Use null-aware operator `!`
         
       }
       print("value in service cls $data");
 
-      return ApiResponseFromOtpVerify (success: true, message: 'OTP verified successfully');
+      return ApiResponseFromOtpVerify (success: true, message: AppString.otpVerifiedSuccessfully);
     } else {
-      return ApiResponseFromOtpVerify (data: null,success: false, message: 'Failed to verify OTP');
+      return ApiResponseFromOtpVerify (data: null,success: false, message: AppString.otpVerificationFailed);
     }
   }
 

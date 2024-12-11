@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_api_with_num/presentation/bloc/auth_bloc.dart';
 import 'package:login_api_with_num/presentation/bloc/auth_event.dart';
 import 'package:login_api_with_num/presentation/bloc/auth_state.dart';
+import 'package:login_api_with_num/utils/string_constant.dart';
 import 'package:provider/provider.dart';
 import '../../data/repo/user_repository_impl.dart';
 import '../../domain/usecase/get_users_usecase.dart';
+import '../../utils/dimenstion_file.dart';
 import 'otp_verfication.dart';
 
 class PhoneNumberScreen extends StatefulWidget {
@@ -25,17 +27,17 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
         generateCsrfTokenUseCase: GenerateCsrfToken(AuthRepositoryImpl())
       ),
       child: Scaffold(
-        appBar: AppBar(title: Text('Enter Phone Number')),
+        appBar: AppBar(title: Text(AppString.enterPhoneNumber)),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(AppDimensions.padding_16),
           child: Column(
             children: [
               TextField(
                 controller: phoneController,
-                decoration: InputDecoration(labelText: 'Phone Number'),
+                decoration: InputDecoration(labelText: AppString.phoneNumber),
                 keyboardType: TextInputType.phone,
               ),
-              SizedBox(height: 20),
+              SizedBox(height:AppDimensions.height_20),
               // BlocConsumer to listen and build UI based on AuthState
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
@@ -65,8 +67,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                       _sendOtp(context, phoneController.text);
                     },
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      textStyle: TextStyle(fontSize: 10),
+                      padding: EdgeInsets.symmetric(vertical: AppDimensions.padding_8),
+                      textStyle: TextStyle(fontSize: AppDimensions.fontSize_10),
                     ),
                     child: state is AuthLoading
                         ? const Row(
@@ -74,18 +76,18 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center, // Center the widgets horizontally
                     children: [
                       SizedBox(
-                        width: 20, // Desired width of the progress indicator
-                        height: 20, // Desired height of the progress indicator
+                        width: AppDimensions.width_20, // Desired width of the progress indicator
+                        height: AppDimensions.height_20, // Desired height of the progress indicator
                         child: CircularProgressIndicator(
                           strokeWidth: 2, // Adjust the thickness
                           color: Colors.white, // Set the color
                         ),
                       ),
-                      SizedBox(height: 10), // Add spacing between the widgets
-                      Text('Loading...', style: TextStyle(color: Colors.white)), // Optional text below
+                      SizedBox(height: AppDimensions.height_10), // Add spacing between the widgets
+                      Text(AppString.loading, style: TextStyle(color: Colors.white)), // Optional text below
                     ],
                   )
-                  : Text('Send OTP'),
+                  : Text(AppString.sentOtp),
                   );
                 },
               ),
